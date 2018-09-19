@@ -13,10 +13,19 @@ typedef struct {
 
 // converts a block index to an index in the array,
 // and a char that indicates the offset of the bit inside the array
-BitMapEntryKey BitMap_blockToIndex(int num);
+BitMapEntryKey BitMap_blockToIndex(int num){
+	BitMapEntryKey ret;
+	ret->entry_num = num/8;
+	ret->bit_num = (char)num%8;
+	return ret;
+}
 
 // converts a bit to a linear index
-int BitMap_indexToBlock(int entry, uint8_t bit_num);
+int BitMap_indexToBlock(int entry, uint8_t bit_num){
+	int ret = entry * 8;
+	ret += bit_num;
+	return ret;
+}
 
 // returns the index of the first bit having status "status"
 // in the bitmap bmap, and starts looking from position start
