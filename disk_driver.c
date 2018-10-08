@@ -44,7 +44,7 @@ void DiskDriver_init(DiskDriver* disk, const char* filename, int num_blocks){
 	disk.header.bitmap_entries = num_blocks*sizeof(char);
 
 	disk.header.free_blocks = num_blocks;
-	disk.header.first_free_block = 8733;
+	disk.header.first_free_block = 0;
 
 	disk.bitmap_data = (char*) calloc(num_blocks, sizeof(char));
 }
@@ -55,10 +55,15 @@ void DiskDriver_init(DiskDriver* disk, const char* filename, int num_blocks){
 // returns -1 if the block is free accrding to the bitmap
 // 0 otherwise
 int DiskDriver_readBlock(DiskDriver* disk, void* dest, int block_num){
-  if(disk.bitmap_data[block_num] == '0'){
-    printf("Errore, blocco numero ... è libero\n");
-    exit(1);
+  BitMapEntryKey key = BitMap_blockToIndex(block_num);
+  char bitsofchar[8];
+  char c = disk.bitmap_data[key.entry_num];
+  chartobin(c, bitsofchar);
+  if(bitsofchar[k.bit_num] == '0'){
+    return -1;
   }
+
+
   if(lseek(disk.fd, block_num*BLOCK_SIZE, 0) < 0){
     printf("Errore nella chiamata lseek\n");
     exit(1);
@@ -73,6 +78,9 @@ int DiskDriver_readBlock(DiskDriver* disk, void* dest, int block_num){
 // writes a block in position block_num, and alters the bitmap accordingly
 // returns -1 if operation not possible
 int DiskDriver_writeBlock(DiskDriver* disk, void* src, int block_num){
+  BitMap bm;
+  bm.num_bits = disk.header.num_blocks;
+  bm.entries = disk.bitmap_data;
   if(lseek(disk.fd, block_num*BLOCK_SIZE, 0) < 0){
     printf("Errore nella chiamata lseek\n");
     exit(1);
@@ -81,9 +89,7 @@ int DiskDriver_writeBlock(DiskDriver* disk, void* src, int block_num){
     printf("Errore nella chiamata read\n");
     exit(1);
   }
-  
-  disk.bitmap_data[block_num] = '1';
-  return 0;
+  int ret = BitMap_set(bm, block_num, 1);
 }
 
 // frees a block in position block_num, and alters the bitmap accordingly
@@ -92,22 +98,24 @@ int DiskDriver_freeBlock(DiskDriver* disk, int block_num){
   if(lseek(disk.fd, block_num*BLOCK_SIZE, 0) < 0){
     printf("Errore nella chiamata lseek\n");
     exit(1);
-    } 
+    }
+    DiskDriver_writeBlock(disk.fd, 0, block_num);
+    int ret = BitMap_set(bmap,block_num, 0);
+    return ret;
 
 }
 
 // returns the first free block in the disk from position (checking the bitmap)
 int DiskDriver_getFreeBlock(DiskDriver* disk, int start){
-  int lenght = strlen(disk.bitmap_data);
-  for(i = start; i<lenght; i++){
-    if(disk.bitmap_data[i] == '0'){
-    	return i;
-    }
-    return -1;
-  }
+  BitMap bm;
+  bm.num_bits = disk.header.num_blocks;
+  bm.entries = disk.bitmap_data;
+  int ret = BitMap_get(bm, start, 0);
+  return ret;
+  
 }
 
 // writes the data (flushing the mmaps)
 int DiskDriver_flush(DiskDriver* disk){
-  
+  msinc
 }
