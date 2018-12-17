@@ -89,12 +89,6 @@ typedef struct {
 // initializes a file system on an already made disk
 // returns a handle to the top level directory stored in the first block
 DirectoryHandle* SimpleFS_init(SimpleFS* fs, DiskDriver* disk){
-  fs.disk = disk;
-  DirectoryHandle* dh;
-  dh.sfs = fs;
-  dh.dcb = 
-  dh.directory = null;
-
 
 }
 
@@ -116,7 +110,7 @@ FileHandle* SimpleFS_createFile(DirectoryHandle* d, const char* filename){
 
 // reads in the (preallocated) blocks array, the name of all files in a directory 
 int SimpleFS_readDir(char** names, DirectoryHandle* d){
-
+	return 0;
 }
 
 
@@ -128,6 +122,7 @@ FileHandle* SimpleFS_openFile(DirectoryHandle* d, const char* filename){
 
 // closes a file handle (destroyes it)
 int SimpleFS_close(FileHandle* f){
+	return 0;
 
 }
 
@@ -135,13 +130,14 @@ int SimpleFS_close(FileHandle* f){
 // overwriting and allocating new space if necessary
 // returns the number of bytes written
 int SimpleFS_write(FileHandle* f, void* data, int size){
-
+	return 0;
 }
 
 // writes in the file, at current position size bytes stored in data
 // overwriting and allocating new space if necessary
 // returns the number of bytes read
 int SimpleFS_read(FileHandle* f, void* data, int size){
+	return 0;
 
 }
 
@@ -149,6 +145,7 @@ int SimpleFS_read(FileHandle* f, void* data, int size){
 // returns pos on success
 // -1 on error (file too short)
 int SimpleFS_seek(FileHandle* f, int pos){
+	return 0;
 
 }
 
@@ -156,6 +153,7 @@ int SimpleFS_seek(FileHandle* f, int pos){
 // 0 on success, negative value on error
 // it does side effect on the provided handle
  int SimpleFS_changeDir(DirectoryHandle* d, char* dirname){
+ 	return 0;
 
  }
 
@@ -163,6 +161,7 @@ int SimpleFS_seek(FileHandle* f, int pos){
 // 0 on success
 // -1 on error
 int SimpleFS_mkDir(DirectoryHandle* d, char* dirname){
+	return 0;
 
 }
 
@@ -170,6 +169,7 @@ int SimpleFS_mkDir(DirectoryHandle* d, char* dirname){
 // returns -1 on failure 0 on success
 // if a directory, it removes recursively all contained files
 int SimpleFS_remove(SimpleFS* fs, char* filename){
+	return 0;
 
 }
 
