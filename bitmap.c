@@ -46,12 +46,12 @@ int BitMap_get(BitMap* bmap, int start, int status){
 	char c = (*bmap).entries[bmkey.entry_num];
 	chartobin(c, bitsofchar);
 	int len =strlen(bitsofchar);
-	int counter = bmkey.entry_num+1;
-	for(int i = bmkey.bit_num; i < len-bmkey.bit_num; i++){
+	for(int i = bmkey.bit_num; i < len; i++){
 		if(bitsofchar[i] == stat){
-		return BitMap_indexToBlock(start,i);
+		return BitMap_indexToBlock(bmkey.entry_num,i);
 	}
 }
+    int counter = bmkey.entry_num+1;
 	while(counter < bmlen){
 	 c = (*bmap).entries[counter];
 	 chartobin(c, bitsofchar);
@@ -64,6 +64,7 @@ int BitMap_get(BitMap* bmap, int start, int status){
 }
 return -1;
 }
+
 // sets the bit at index pos in bmap to status
 int BitMap_set(BitMap* bmap, int pos, int status){
 	/*poner que el indice no sea mayor de la dimension de la bimap (HACER UN CONTROL)*/
@@ -76,23 +77,66 @@ int BitMap_set(BitMap* bmap, int pos, int status){
 	(*bmap).entries[bmkey.entry_num] = strtol(bitsofchar, 0, 2);
 	return pos;
 
+
 }
 
 void Stampa_BitMap(BitMap* bmap){
-	int bitmaplen = ((*bmap).num_bits)/8;
+	puts("\n***** Stampa della BitMap *****\n");
+	int bitmaplen;
+	printf("Numbits: %d\n",(bmap->num_bits));
+	int bitsadd = bmap->num_bits%8;
+	if(bmap->num_bits < 9){
+		bitmaplen = 1;
+	}
+	else{
+    if(bitsadd > 0){
+      bitmaplen = (bmap->num_bits/8)+1;
+    }
+    else{ 
+    	bitmaplen = (bmap->num_bits)/8;
+        }
+	}
+	/*printf("%s%ld\n","Size of entries: ", strlen(bmap->entries));
+	printf("%s%d\n","Valore del bitmaplen: ", bitmaplen);*/
 	int counter = 0;
 	char bitsofchar[8];
 	char c;
 	int len =8;
+	/*printf("Valore del bitmaplen: %d\n", bitmaplen );
 	while(counter < bitmaplen){
-	 c = (*bmap).entries[counter];
+	printf("%s%d\n","Valore del 'Counter' in While: ", counter);
+	 c = bmap->entries[counter];
 	 chartobin(c, bitsofchar);
 	 for(int i = 0; i<len; i++){
 	 	printf("%c", bitsofchar[i]);
 	    }
 	    printf("\n");
 	    counter++;
+	}*/
+	counter = 0;
+	puts(" ");
+	puts("BITMAP: ");
+	while(counter < bitmaplen){
+	 if(counter == (bitmaplen-1) && (bitsadd != 0)){
+	 	c = bmap->entries[counter];
+	    chartobin(c, bitsofchar);
+	    for(int i = 0; i<bitsadd; i++){
+	    	printf("%c", bitsofchar[i]);
+	    }
+	    printf(" ");
+	    counter++;
+		}
+	 else{
+	 c = bmap->entries[counter];
+	 chartobin(c, bitsofchar);
+	 for(int i = 0; i<len; i++){
+	 	printf("%c", bitsofchar[i]);
+	    }
+	    printf(" ");
+	    counter++;
 	}
-	
 }
+puts("\n");
+}
+
 
