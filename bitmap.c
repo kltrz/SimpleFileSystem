@@ -5,7 +5,7 @@
 
 
 void chartobin(char c, char r[])
-{ 
+{
     for (int i = 7; i >= 0; --i){
     	r[7-i] = (c & (1 << i)) ? '1' : '0';
     }
@@ -33,12 +33,7 @@ int BitMap_indexToBlock(int entry, unsigned char bit_num){
 // returns the index of the first bit having status "status"
 // in the bitmap bmap, and starts looking from position start
 int BitMap_get(BitMap* bmap, int start, int status){
-	/*poner que el indice no sea mayor de la dimension de la bimap (HACER UN CONTROL)*/
-	
-	/*if(start > bmlen){
-		printf("Errore: limite di posizione passato\n");
-		exit(1);
-	}*/
+
 	int bmlen = ((*bmap).num_bits)/8;
 	char bitsofchar[8];
 	char stat = status + '0';
@@ -67,7 +62,7 @@ return -1;
 
 // sets the bit at index pos in bmap to status
 int BitMap_set(BitMap* bmap, int pos, int status){
-	/*poner que el indice no sea mayor de la dimension de la bimap (HACER UN CONTROL)*/
+
 	char bitsofchar[8];
 	char stat = status +'0';
 	BitMapEntryKey bmkey = BitMap_blockToIndex(pos);
@@ -92,27 +87,14 @@ void Stampa_BitMap(BitMap* bmap){
     if(bitsadd > 0){
       bitmaplen = (bmap->num_bits/8)+1;
     }
-    else{ 
+    else{
     	bitmaplen = (bmap->num_bits)/8;
         }
 	}
-	/*printf("%s%ld\n","Size of entries: ", strlen(bmap->entries));
-	printf("%s%d\n","Valore del bitmaplen: ", bitmaplen);*/
 	int counter = 0;
 	char bitsofchar[8];
 	char c;
-	int len =8;
-	/*printf("Valore del bitmaplen: %d\n", bitmaplen );
-	while(counter < bitmaplen){
-	printf("%s%d\n","Valore del 'Counter' in While: ", counter);
-	 c = bmap->entries[counter];
-	 chartobin(c, bitsofchar);
-	 for(int i = 0; i<len; i++){
-	 	printf("%c", bitsofchar[i]);
-	    }
-	    printf("\n");
-	    counter++;
-	}*/
+	int len = 8;
 	counter = 0;
 	puts(" ");
 	puts("BITMAP: ");
@@ -138,5 +120,3 @@ void Stampa_BitMap(BitMap* bmap){
 }
 puts("\n");
 }
-
-
