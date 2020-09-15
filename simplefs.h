@@ -46,26 +46,28 @@ typedef struct {
   BlockHeader header;
   FileControlBlock fcb;
   int num_entries;
+  int available; //aggiungere numero di entries avalaible
   int file_blocks[ (BLOCK_SIZE
 		   -sizeof(BlockHeader)
 		   -sizeof(FileControlBlock)
-		    -sizeof(int))/sizeof(int) ];
+		    -sizeof(int)-sizeof(int))/sizeof(int) ];
 } FirstDirectoryBlock;
 
 // this is remainder block of a directory
 typedef struct {
   BlockHeader header;
-  int file_blocks[ (BLOCK_SIZE-sizeof(BlockHeader))/sizeof(int) ];
+  int file_blocks[ (BLOCK_SIZE-sizeof(BlockHeader)-sizeof(int))/sizeof(int) ];
+  int available; //aggiungere numero di entries avalaible
 } DirectoryBlock;
 /******************* stuff on disk END *******************/
 
 
 
 
-  
+
 typedef struct {
   DiskDriver* disk;
-  // add more fields if needed
+  FirstDirectoryBlock *firstdb;
 } SimpleFS;
 
 // this is a file handle, used to refer to open files
@@ -102,7 +104,7 @@ void SimpleFS_format(SimpleFS* fs);
 // an empty file consists only of a block of type FirstBlock
 FileHandle* SimpleFS_createFile(DirectoryHandle* d, const char* filename);
 
-// reads in the (preallocated) blocks array, the name of all files in a directory 
+// reads in the (preallocated) blocks array, the name of all files in a directory
 int SimpleFS_readDir(char** names, DirectoryHandle* d);
 
 
@@ -142,7 +144,3 @@ int SimpleFS_mkDir(DirectoryHandle* d, char* dirname);
 // returns -1 on failure 0 on success
 // if a directory, it removes recursively all contained files
 int SimpleFS_remove(SimpleFS* fs, char* filename);
-
-
-  
-
