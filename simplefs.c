@@ -124,7 +124,6 @@ FileHandle* SimpleFS_createFile(DirectoryHandle* d, const char* filename) {
     for(int i = 0; i < occupied_blocks ; i++) { //d->dcb->num_entries //Dsource (BLOCK_SIZE-sizeof(BlockHeader))/sizeof(int)
       if((dsource->file_blocks[i]) != 0){
         filedest = d->sfs->disk->bitmap_data + (BLOCK_SIZE*dsource->file_blocks[i]);
-        puts(filedest->fcb.name);
         if((strcmp((filedest->fcb.name), filename)) == 0) {
           printf("\nERRORE, IL FILE GIÀ ESISTE\n\n");
           return NULL;
@@ -147,7 +146,6 @@ FileHandle* SimpleFS_createFile(DirectoryHandle* d, const char* filename) {
       for(int i = 0; i < occupied_blocks ; i++) { //d->dcb->num_entries //Dsource (BLOCK_SIZE-sizeof(BlockHeader))/sizeof(int)
         if((bsource->file_blocks[i]) != 0){
           filedest = d->sfs->disk->bitmap_data + (BLOCK_SIZE*bsource->file_blocks[i]);
-          puts(filedest->fcb.name);
           if((strcmp((filedest->fcb.name), filename)) == 0) {
             printf("\nERRORE, IL FILE GIÀ ESISTE\n\n");
             return NULL;
@@ -392,7 +390,6 @@ int counter = 0;
   for(int i = 0; i < file_index ; i++){
     if(( next_dest->file_blocks[i]) != 0){
       filedest = d->sfs->disk->bitmap_data + (BLOCK_SIZE * next_dest->file_blocks[i]);
-      puts(filedest->fcb.name);
       names[counter] = filedest->fcb.name;
       counter++;
 
@@ -412,7 +409,6 @@ if(remaining_blocks > 1) {
     for(int i = 0; i < file_index ; i++) {
       if((bsource->file_blocks[i]) != 0){
         filedest = d->sfs->disk->bitmap_data + (BLOCK_SIZE*bsource->file_blocks[i]);
-        puts(filedest->fcb.name);
         names[counter] = filedest->fcb.name;
         counter++;
       }
@@ -455,7 +451,6 @@ FileHandle* SimpleFS_openFile(DirectoryHandle* d, const char* filename){
     for(int i = 0; i < occupied_blocks ; i++) { //d->dcb->num_entries //Dsource (BLOCK_SIZE-sizeof(BlockHeader))/sizeof(int)
       if((dsource->file_blocks[i]) != 0){
         filedest = d->sfs->disk->bitmap_data + (BLOCK_SIZE*dsource->file_blocks[i]);
-        puts(filedest->fcb.name);
         if((strcmp((filedest->fcb.name), filename)) == 0) {
           printf("\nFILE TROVATO\n\n");
           blocco = dsource->file_blocks[i];
@@ -485,7 +480,6 @@ FileHandle* SimpleFS_openFile(DirectoryHandle* d, const char* filename){
       for(int i = 0; i < occupied_blocks ; i++) {
         if((bsource->file_blocks[i]) != 0){
           filedest = d->sfs->disk->bitmap_data + (BLOCK_SIZE*bsource->file_blocks[i]);
-          puts(filedest->fcb.name);
           if((strcmp((filedest->fcb.name), filename)) == 0) {
             printf("\nFILE TROVATO\n\n");
             blocco = bsource->file_blocks[i];
