@@ -70,7 +70,7 @@ void DiskDriver_init(DiskDriver* disk, const char* filename, int num_blocks){
 
         disk->bitmap.entries = (char*) calloc(disk->header->num_blocks, sizeof(char));
         disk->bitmap.entries = disk->bitmap_data + 512;
-        disk->bitmap.num_bits = num_blocks;
+        disk->bitmap.num_bits = disk->header->num_blocks;
 
 
 
