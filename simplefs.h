@@ -1,6 +1,6 @@
 #pragma once
-#include "bitmap.h"
-#include "disk_driver.h"
+//#include "bitmap.h"
+#include "disk_driver.c"
 
 /*these are structures stored on disk*/
 
@@ -32,13 +32,15 @@ typedef struct {
 typedef struct {
   BlockHeader header;
   FileControlBlock fcb;
-  char data[BLOCK_SIZE-sizeof(FileControlBlock) - sizeof(BlockHeader)] ;
+  int available;
+  char data[BLOCK_SIZE-sizeof(FileControlBlock) - sizeof(BlockHeader) - sizeof(int)] ;
 } FirstFileBlock;
 
 // this is one of the next physical blocks of a file
 typedef struct {
   BlockHeader header;
-  char  data[BLOCK_SIZE-sizeof(BlockHeader)];
+  int available;
+  char  data[BLOCK_SIZE-sizeof(BlockHeader)-sizeof(int)];
 } FileBlock;
 
 // this is the first physical block of a directory
@@ -65,10 +67,10 @@ typedef struct {
 
 
 
-typedef struct {
-  DiskDriver* disk;
-  FirstDirectoryBlock *firstdb;
-} SimpleFS;
+  typedef struct {
+    DiskDriver* disk;
+    FirstDirectoryBlock *firstdb;
+  } SimpleFS;
 
 // this is a file handle, used to refer to open files
 typedef struct {
