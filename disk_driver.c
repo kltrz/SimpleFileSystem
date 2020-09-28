@@ -60,7 +60,7 @@ void DiskDriver_init(DiskDriver* disk, const char* filename, int num_blocks){
         printf("Primo bloccho libero: %d\n", disk->header->first_free_block);
 
         disk->bitmap_data = (char*) calloc(disk->header->num_blocks, sizeof(char));
-        disk->bitmap_data = (char*) mmap(NULL, num_blocks*BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, disk->fd, 0);
+        disk->bitmap_data = (char*) mmap(NULL, disk->header->num_blocks*BLOCK_SIZE, PROT_READ|PROT_WRITE, MAP_SHARED, disk->fd, 0);
         if(disk->bitmap_data == MAP_FAILED){
         fprintf(stderr, "Value of errno: %d\n", errno);
         fprintf(stderr, "Error mapping BitMap_data: %s\n", strerror(errno));
