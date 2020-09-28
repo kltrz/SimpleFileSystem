@@ -154,8 +154,8 @@ FileHandle* SimpleFS_createFile(DirectoryHandle* d, const char* filename) {
             return NULL;
           }
         }
-      }
 
+    }
     if(has_next != -1) {
     d->current_block_in_disk = has_next;
     bsource = (DirectoryBlock *) (d->sfs->disk->bitmap_data + (BLOCK_SIZE*has_next));
@@ -195,16 +195,8 @@ if(d->dcb->available > 0) {
   int freeblock = DiskDriver_getFreeBlock(d->sfs->disk, 0);
   f->fcb.block_in_disk = freeblock;
 
-  int index;
 
-      for(int i = 0; i < MAX_FD_BLOCK; i++) {
-        if((dsource->file_blocks[i]) == 0){
-          index = i;
-        }
-      }
-
-
-  d->dcb->file_blocks[index] = freeblock;
+  d->dcb->file_blocks[occupied_blocks] = freeblock;
 
 
   d->dcb->num_entries++;
@@ -235,18 +227,9 @@ else {
           int freeblock = DiskDriver_getFreeBlock(d->sfs->disk, 0);
           f->fcb.block_in_disk = freeblock;
 
-          int index;
-
-          for(int i = 0; i < MAX_D_BLOCK ; i++) {
-            if((bsource->file_blocks[i]) == 0){
-              index = i;
-          }
-        }
-
-
           occupied_blocks = MAX_D_BLOCK - bsource->available;
 
-          bsource->file_blocks[index] = freeblock;
+          bsource->file_blocks[occupied_blocks] = freeblock;
 
           d->dcb->num_entries++;
 
@@ -1315,7 +1298,8 @@ int SimpleFS_mkDir(DirectoryHandle* d, char* dirname){
             return NULL;
           }
         }
-      }
+
+    }
     if(has_next != -1) {
     d->current_block_in_disk = has_next;
     bsource = (DirectoryBlock *) (d->sfs->disk->bitmap_data + (BLOCK_SIZE*has_next));
@@ -1328,13 +1312,7 @@ int SimpleFS_mkDir(DirectoryHandle* d, char* dirname){
   if(d->dcb->available > 0){
 
 
-    int index;
-
-    for(int i = 0; i < MAX_FD_BLOCK ; i++) {
-      if((dsource->file_blocks[i]) == 0){
-        index = i;
-      }
-    }
+    int index = MAX_FD_BLOCK - d->dcb->available;
 
     FirstDirectoryBlock *nd = (FirstDirectoryBlock *) malloc(sizeof(FirstDirectoryBlock));
     //HEADER
@@ -1395,13 +1373,7 @@ int SimpleFS_mkDir(DirectoryHandle* d, char* dirname){
       //L'ULTIMO BLOCCO DELLA DIRECTORY HA SPAZIO LIBERO
       if(db->available > 0){
 
-        int index;
-
-        for(int i = 0; i < MAX_D_BLOCK ; i++) {
-          if((db->file_blocks[i]) == 0){
-            index = i;
-        }
-      }
+        int index = MAX_D_BLOCK - db->available;
 
         FirstDirectoryBlock *nd = (FirstDirectoryBlock *) malloc(sizeof(FirstDirectoryBlock));
 
@@ -1776,6 +1748,7 @@ int SimpleFS_remove(SimpleFS* fs, char* filename){
             }
 
           }
+
         }
 
     }
@@ -1784,8 +1757,7 @@ int SimpleFS_remove(SimpleFS* fs, char* filename){
     bsource = (DirectoryBlock *) (fs->disk->bitmap_data + (BLOCK_SIZE*current_block));
   }
   } while(remaining_blocks > 1);
-
-      return 0;
+        return 0;
 }
 }
 
