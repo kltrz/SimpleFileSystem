@@ -1776,7 +1776,6 @@ int SimpleFS_remove(SimpleFS* fs, char* filename){
             }
 
           }
-          return 0;
         }
 
     }
@@ -1785,6 +1784,8 @@ int SimpleFS_remove(SimpleFS* fs, char* filename){
     bsource = (DirectoryBlock *) (fs->disk->bitmap_data + (BLOCK_SIZE*current_block));
   }
   } while(remaining_blocks > 1);
+
+      return 0;
 }
 }
 
