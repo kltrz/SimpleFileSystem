@@ -70,6 +70,7 @@ typedef struct {
   typedef struct {
     DiskDriver* disk;
     FirstDirectoryBlock *firstdb;
+    int current_dblock;
   } SimpleFS;
 
 // this is a file handle, used to refer to open files
@@ -88,6 +89,7 @@ typedef struct {
   BlockHeader* current_block;      // current block in the directory
   int pos_in_dir;                  // absolute position of the cursor in the directory
   int pos_in_block;                // relative position of the cursor in the block
+  int current_block_in_disk;
 } DirectoryHandle;
 
 // initializes a file system on an already made disk
@@ -146,3 +148,5 @@ int SimpleFS_mkDir(DirectoryHandle* d, char* dirname);
 // returns -1 on failure 0 on success
 // if a directory, it removes recursively all contained files
 int SimpleFS_remove(SimpleFS* fs, char* filename);
+
+int Remove_Directory(SimpleFS* fs, int index);
